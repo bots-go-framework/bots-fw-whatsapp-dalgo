@@ -12,8 +12,10 @@ github.com/bots-go-framework/bots-fw-whatsapp v0.9.0 h1:VqDnW0yr0QZcF3Fd/889QTq4
 github.com/bots-go-framework/bots-fw-whatsapp v0.9.0/go.mod h1:X2KUsaQt/rdw9fVXpBxVmHH7OwdxORcDRcDkcoZ6RtY=
 github.com/bots-go-framework/bots-go-core v0.2.5 h1:Uv9zb23yHJY/GnfEF6ocucAmfS12pwFHiig29ZoSqME=
 github.com/bots-go-framework/bots-go-core v0.2.5/go.mod h1:O/J3Q4HhTpbsbCL87Zhlf1BPtvfVp9UcfBWsc8D8ghw=
-github.com/dal-go/dalgo v0.62.15 h1:ZToGaqcV7iLaZMAXkOxGwTFmoHHydkSy9oSC4dsWqIk=
-github.com/dal-go/dalgo v0.62.15/go.mod h1:D24Vcd8SLqunLf27hXRkrC5uM8kTPBga6JVKbBuW9Tw=
+github.com/dal-go/dalgo v0.63.1 h1:GEJAGlNH5xGLdFasSIRrYdqGfd0+4A9DGQ843qJQbyA=
+github.com/dal-go/dalgo v0.63.1/go.mod h1:LtD5XVzb1kAdXaRcWVNy4F2ROC4fqR4jqD3q/GD4fJQ=
+github.com/dal-go/record v0.1.0 h1:hA4143oZwIgtBH/1BRTUEZMCpDfXQr3ONlVXX8USCNg=
+github.com/dal-go/record v0.1.0/go.mod h1:quwsVJTT0f6y3Mhx+yHpTobY7luX1M6kyO6fdJ/AFYE=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/mschoch/smat v0.2.0 h1:8imxQsjDm8yFEAVBe7azKmKSgzSkZXDuKkSq9374khM=

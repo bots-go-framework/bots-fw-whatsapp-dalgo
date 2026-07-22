@@ -4,7 +4,8 @@ go 1.25
 
 require (
 	github.com/bots-go-framework/bots-fw-whatsapp v0.9.0
-	github.com/dal-go/dalgo v0.62.15
+	github.com/dal-go/dalgo v0.63.1
+	github.com/dal-go/record v0.1.0
 )
 
 require (
