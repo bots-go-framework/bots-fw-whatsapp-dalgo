@@ -12,7 +12,7 @@ require (
 	github.com/RoaringBitmap/roaring/v2 v2.21.0 // indirect
 	github.com/bits-and-blooms/bitset v1.24.4 // indirect
 	github.com/bots-go-framework/bots-api-whatsapp v0.3.0 // indirect
-	github.com/bots-go-framework/bots-fw v0.76.0 // indirect
+	github.com/bots-go-framework/bots-fw v0.76.1 // indirect
 	github.com/bots-go-framework/bots-fw-store v0.12.0 // indirect
 	github.com/bots-go-framework/bots-go-core v0.2.5 // indirect
 	github.com/mschoch/smat v0.2.0 // indirect
