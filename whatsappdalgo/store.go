@@ -11,6 +11,7 @@ import (
 
 	"github.com/bots-go-framework/bots-fw-whatsapp/whatsapp"
 	"github.com/dal-go/dalgo/dal"
+	"github.com/dal-go/record"
 )
 
 // DBProvider returns the DALgo database for a request context.
@@ -66,10 +67,10 @@ func (s *SubjectStore) PutSubject(ctx context.Context, botID, wamid, subject str
 	if err != nil {
 		return err
 	}
-	key := dal.NewKeyWithID(subjectsCollection, subjectKey(botID, wamid))
+	key := record.NewKeyWithID(subjectsCollection, subjectKey(botID, wamid))
 	data := &subjectData{Subject: subject, ExpiresAt: expiresAt}
 	return db.RunReadwriteTransaction(ctx, func(ctx context.Context, tx dal.ReadwriteTransaction) error {
-		return tx.Set(ctx, dal.NewRecordWithData(key, data))
+		return tx.Set(ctx, record.NewRecordWithData(key, data))
 	})
 }
 
@@ -79,8 +80,8 @@ func (s *SubjectStore) GetSubject(ctx context.Context, botID, wamid string) (str
 		return "", false, err
 	}
 	data := &subjectData{}
-	if err := db.Get(ctx, dal.NewRecordWithData(dal.NewKeyWithID(subjectsCollection, subjectKey(botID, wamid)), data)); err != nil {
-		if dal.IsNotFound(err) {
+	if err := db.Get(ctx, record.NewRecordWithData(record.NewKeyWithID(subjectsCollection, subjectKey(botID, wamid)), data)); err != nil {
+		if record.IsNotFound(err) {
 			return "", false, nil
 		}
 		return "", false, err
@@ -112,8 +113,8 @@ func (s *ChatDataStore) GetChatData(ctx context.Context, botID, chatID string) (
 		return nil, err
 	}
 	data := &whatsapp.WaChatData{}
-	if err := db.Get(ctx, dal.NewRecordWithData(dal.NewKeyWithID(chatDataCollection, chatDataKey(botID, chatID)), data)); err != nil {
-		if dal.IsNotFound(err) {
+	if err := db.Get(ctx, record.NewRecordWithData(record.NewKeyWithID(chatDataCollection, chatDataKey(botID, chatID)), data)); err != nil {
+		if record.IsNotFound(err) {
 			return &whatsapp.WaChatData{}, nil
 		}
 		return nil, err
@@ -126,9 +127,9 @@ func (s *ChatDataStore) SaveChatData(ctx context.Context, botID, chatID string, 
 	if err != nil {
 		return err
 	}
-	key := dal.NewKeyWithID(chatDataCollection, chatDataKey(botID, chatID))
+	key := record.NewKeyWithID(chatDataCollection, chatDataKey(botID, chatID))
 	return db.RunReadwriteTransaction(ctx, func(ctx context.Context, tx dal.ReadwriteTransaction) error {
-		return tx.Set(ctx, dal.NewRecordWithData(key, data))
+		return tx.Set(ctx, record.NewRecordWithData(key, data))
 	})
 }
 
@@ -161,8 +162,8 @@ func (c *TemplateCatalog) Get(ctx context.Context, purpose, locale string) (what
 		return whatsapp.TemplateDef{}, false, err
 	}
 	list := &templateList{}
-	if err := db.Get(ctx, dal.NewRecordWithData(dal.NewKeyWithID(templatesCollection, purpose), list)); err != nil {
-		if dal.IsNotFound(err) {
+	if err := db.Get(ctx, record.NewRecordWithData(record.NewKeyWithID(templatesCollection, purpose), list)); err != nil {
+		if record.IsNotFound(err) {
 			return whatsapp.TemplateDef{}, false, nil
 		}
 		return whatsapp.TemplateDef{}, false, err
@@ -176,9 +177,9 @@ func (c *TemplateCatalog) Upsert(ctx context.Context, purpose string, def whatsa
 		return err
 	}
 	return db.RunReadwriteTransaction(ctx, func(ctx context.Context, tx dal.ReadwriteTransaction) error {
-		key := dal.NewKeyWithID(templatesCollection, purpose)
+		key := record.NewKeyWithID(templatesCollection, purpose)
 		list := &templateList{}
-		if err := tx.Get(ctx, dal.NewRecordWithData(key, list)); err != nil && !dal.IsNotFound(err) {
+		if err := tx.Get(ctx, record.NewRecordWithData(key, list)); err != nil && !record.IsNotFound(err) {
 			return err
 		}
 		for i, old := range list.Defs {
@@ -192,11 +193,11 @@ func (c *TemplateCatalog) Upsert(ctx context.Context, purpose string, def whatsa
 	})
 }
 
-func (c *TemplateCatalog) setTemplateList(ctx context.Context, tx dal.ReadwriteTransaction, key *dal.Key, list *templateList, name, purpose string) error {
-	if err := tx.Set(ctx, dal.NewRecordWithData(key, list)); err != nil {
+func (c *TemplateCatalog) setTemplateList(ctx context.Context, tx dal.ReadwriteTransaction, key *record.Key, list *templateList, name, purpose string) error {
+	if err := tx.Set(ctx, record.NewRecordWithData(key, list)); err != nil {
 		return err
 	}
-	return tx.Set(ctx, dal.NewRecordWithData(dal.NewKeyWithID(templateNamesCollection, name), &templateNameRecord{Purpose: purpose}))
+	return tx.Set(ctx, record.NewRecordWithData(record.NewKeyWithID(templateNamesCollection, name), &templateNameRecord{Purpose: purpose}))
 }
 
 func (c *TemplateCatalog) SetStatus(ctx context.Context, name string, status whatsapp.TemplateStatus) (found bool, err error) {
@@ -205,17 +206,17 @@ func (c *TemplateCatalog) SetStatus(ctx context.Context, name string, status wha
 		return false, err
 	}
 	nameData := &templateNameRecord{}
-	if err = db.Get(ctx, dal.NewRecordWithData(dal.NewKeyWithID(templateNamesCollection, name), nameData)); err != nil {
-		if dal.IsNotFound(err) {
+	if err = db.Get(ctx, record.NewRecordWithData(record.NewKeyWithID(templateNamesCollection, name), nameData)); err != nil {
+		if record.IsNotFound(err) {
 			return false, nil
 		}
 		return false, err
 	}
 	err = db.RunReadwriteTransaction(ctx, func(ctx context.Context, tx dal.ReadwriteTransaction) error {
-		key := dal.NewKeyWithID(templatesCollection, nameData.Purpose)
+		key := record.NewKeyWithID(templatesCollection, nameData.Purpose)
 		list := &templateList{}
-		if err := tx.Get(ctx, dal.NewRecordWithData(key, list)); err != nil {
-			if dal.IsNotFound(err) {
+		if err := tx.Get(ctx, record.NewRecordWithData(key, list)); err != nil {
+			if record.IsNotFound(err) {
 				return nil
 			}
 			return err
@@ -224,7 +225,7 @@ func (c *TemplateCatalog) SetStatus(ctx context.Context, name string, status wha
 			if list.Defs[i].Name == name {
 				list.Defs[i].Status = status
 				found = true
-				return tx.Set(ctx, dal.NewRecordWithData(key, list))
+				return tx.Set(ctx, record.NewRecordWithData(key, list))
 			}
 		}
 		return nil
