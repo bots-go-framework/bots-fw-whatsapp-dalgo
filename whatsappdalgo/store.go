@@ -92,7 +92,11 @@ func (s *SubjectStore) GetSubject(ctx context.Context, botID, wamid string) (str
 	return data.Subject, true, nil
 }
 
-type ChatDataStore struct{ getDB DBProvider }
+type ChatDataStore struct {
+	getDB DBProvider
+	// now is injectable so tests can pin the clock; defaults to time.Now.
+	now func() time.Time
+}
 
 var _ whatsapp.ChatDataStore = (*ChatDataStore)(nil)
 
@@ -102,7 +106,15 @@ func NewChatDataStoreWithProvider(getDB DBProvider) *ChatDataStore {
 	if getDB == nil {
 		panic("getDB is required")
 	}
-	return &ChatDataStore{getDB: getDB}
+	return &ChatDataStore{getDB: getDB, now: time.Now}
+}
+
+// WithClock overrides the clock used to stamp chat-data timestamps.
+func (s *ChatDataStore) WithClock(now func() time.Time) *ChatDataStore {
+	if now != nil {
+		s.now = now
+	}
+	return s
 }
 
 func chatDataKey(botID, chatID string) string { return botID + ":" + chatID }
@@ -127,6 +139,15 @@ func (s *ChatDataStore) SaveChatData(ctx context.Context, botID, chatID string, 
 	if err != nil {
 		return err
 	}
+	// BotBaseData.EnsureTimestamps is the documented seam a store must call
+	// before writing a BotChatData, so Validate never rejects the record for a
+	// missing DtCreated/DtUpdated. dalgo v0.64 runs that validation in the
+	// framework write pipeline, so skipping it is no longer silently tolerated.
+	now := s.now
+	if now == nil {
+		now = time.Now
+	}
+	data.EnsureTimestamps(now())
 	key := record.NewKeyWithID(chatDataCollection, chatDataKey(botID, chatID))
 	return db.RunReadwriteTransaction(ctx, func(ctx context.Context, tx dal.ReadwriteTransaction) error {
 		return tx.Set(ctx, record.NewRecordWithData(key, data))

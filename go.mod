@@ -4,17 +4,17 @@ go 1.25
 
 require (
 	github.com/bots-go-framework/bots-fw-whatsapp v0.9.1
-	github.com/dal-go/dalgo v0.63.1
-	github.com/dal-go/record v0.1.0
+	github.com/dal-go/dalgo v0.64.4
+	github.com/dal-go/record v0.1.2
 )
 
 require (
-	github.com/RoaringBitmap/roaring/v2 v2.21.0 // indirect
-	github.com/bits-and-blooms/bitset v1.24.4 // indirect
+	github.com/RoaringBitmap/roaring/v2 v2.24.0 // indirect
+	github.com/bits-and-blooms/bitset v1.24.6 // indirect
 	github.com/bots-go-framework/bots-api-whatsapp v0.3.1 // indirect
-	github.com/bots-go-framework/bots-fw v0.76.1 // indirect
-	github.com/bots-go-framework/bots-fw-store v0.12.0 // indirect
-	github.com/bots-go-framework/bots-go-core v0.2.5 // indirect
+	github.com/bots-go-framework/bots-fw v0.77.8 // indirect
+	github.com/bots-go-framework/bots-fw-store v0.14.1 // indirect
+	github.com/bots-go-framework/bots-go-core v0.3.0 // indirect
 	github.com/mschoch/smat v0.2.0 // indirect
 	github.com/strongo/analytics v0.2.5 // indirect
 	github.com/strongo/i18n v0.8.15 // indirect

@@ -23,7 +23,12 @@ func TestStores_RetainWhatsAppKeysAndBehavior(t *testing.T) {
 	}
 
 	chats := NewChatDataStore(db)
-	if err := chats.SaveChatData(ctx, "bot-1", "chat-1", &whatsapp.WaChatData{RecentInboundIDs: []string{"wamid-1"}}); err != nil {
+	// ChatBaseData.Validate() requires botUserIDs, and SaveChatData cannot
+	// invent it — it only receives botID/chatID — so the caller supplies it,
+	// exactly as the Telegram fields-setter does via SetBotUserID.
+	chatData := &whatsapp.WaChatData{RecentInboundIDs: []string{"wamid-1"}}
+	chatData.BotUserIDs = []string{"wa-user-1"}
+	if err := chats.SaveChatData(ctx, "bot-1", "chat-1", chatData); err != nil {
 		t.Fatalf("SaveChatData() error: %v", err)
 	}
 	chat, err := chats.GetChatData(ctx, "bot-1", "chat-1")
