@@ -1,6 +1,6 @@
 module github.com/bots-go-framework/bots-fw-whatsapp-dalgo
 
-go 1.25
+go 1.27.0
 
 require (
 	github.com/bots-go-framework/bots-fw-whatsapp v0.9.1
