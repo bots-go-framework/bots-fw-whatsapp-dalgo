@@ -12,7 +12,7 @@ import (
 
 func TestStores_RetainWhatsAppKeysAndBehavior(t *testing.T) {
 	ctx := context.Background()
-	db := dalgo2memory.NewDB()
+	db := dalgo2memory.New(dalgo2memory.FirestoreProfile())
 
 	subjects := NewSubjectStore(db)
 	if err := subjects.PutSubject(ctx, "bot-1", "wamid-1", "invoice", time.Now().Add(time.Hour)); err != nil {
@@ -46,7 +46,7 @@ func TestStores_RetainWhatsAppKeysAndBehavior(t *testing.T) {
 }
 
 func TestStores_ResolveDatabasePerOperation(t *testing.T) {
-	db := dalgo2memory.NewDB()
+	db := dalgo2memory.New(dalgo2memory.FirestoreProfile())
 	calls := 0
 	store := NewSubjectStoreWithProvider(func(context.Context) (dal.DB, error) {
 		calls++
