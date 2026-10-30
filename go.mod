@@ -6,7 +6,7 @@ toolchain go1.27.3
 
 require (
 	github.com/bots-go-framework/bots-fw-whatsapp v0.9.1
-	github.com/dal-go/dalgo v0.95.4
+	github.com/dal-go/dalgo v0.96.2
 	github.com/dal-go/record v0.1.5
 )
 
